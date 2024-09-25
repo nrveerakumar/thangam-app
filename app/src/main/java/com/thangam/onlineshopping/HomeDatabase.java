@@ -21,6 +21,8 @@ public class HomeDatabase extends SQLiteOpenHelper {
     }
 
 
+
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TABLE_QUERY = "CREATE TABLE homeDatabase(id INTEGER PRIMARY KEY AUTOINCREMENT, itemName TEXT, itemDisc TEXT, prise INTEGER, image INTEGER, itemCartColor INTEGER, isCart INTEGER)";

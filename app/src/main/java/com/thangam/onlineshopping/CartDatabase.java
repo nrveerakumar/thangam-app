@@ -9,31 +9,32 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-
 import java.util.ArrayList;
 
 public class CartDatabase extends SQLiteOpenHelper {
     Context context;
 
     public CartDatabase(@Nullable Context context) {
-        super(context, "cartDatabase", null, 1);
+        super(context, "cartDatabase", null, 2); // Updated the version to 2
         this.context = context;
     }
 
-
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_TABLE_QUERY = "CREATE TABLE cartDatabase(id INTEGER PRIMARY KEY AUTOINCREMENT, itemName TEXT, itemDisc TEXT, prise INTEGER, image INTEGER, itemCartColor INTEGER, isCart INTEGER)";
+        // Add the 'quantity' field to the table schema
+        String CREATE_TABLE_QUERY = "CREATE TABLE cartDatabase(id INTEGER PRIMARY KEY AUTOINCREMENT, itemName TEXT, itemDisc TEXT, prise INTEGER, image INTEGER, itemCartColor INTEGER, isCart INTEGER, quantity INTEGER)";
         db.execSQL(CREATE_TABLE_QUERY);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS cartDatabase");
-        onCreate(db);
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE cartDatabase ADD COLUMN quantity INTEGER DEFAULT 1"); // Add 'quantity' column
+        }
     }
 
-    public boolean addData(String itemName, String itemDisc, int prise, int image, int itemCartColor, int isCart) {
+    // Method to add data, now including the 'quantity' field
+    public boolean addData(String itemName, String itemDisc, int prise, int image, int itemCartColor, int isCart, int quantity) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("itemName", itemName);
@@ -42,12 +43,14 @@ public class CartDatabase extends SQLiteOpenHelper {
         contentValues.put("image", image);
         contentValues.put("itemCartColor", itemCartColor);
         contentValues.put("isCart", isCart);
+        contentValues.put("quantity", quantity); // Add quantity value
 
         long l = sqLiteDatabase.insert("cartDatabase", null, contentValues);
         sqLiteDatabase.close();
-        return l != -1; // Check if insertion was successful
+        return l != -1;
     }
 
+    // Method to retrieve all data, now including the 'quantity' field
     public ArrayList<ItemClass> getAllDataUser() {
         ArrayList<ItemClass> homeArrayList = new ArrayList<>();
         try {
@@ -61,7 +64,8 @@ public class CartDatabase extends SQLiteOpenHelper {
                     int image = cursor.getInt(4);
                     int itemCartColor = cursor.getInt(5);
                     int isCart = cursor.getInt(6);
-                    homeArrayList.add(new ItemClass(itemName, itemDisc, prise, image, itemCartColor,0));
+                    int quantity = cursor.getInt(7); // Get quantity from cursor
+                    homeArrayList.add(new ItemClass(itemName, itemDisc, prise, image, itemCartColor, isCart, quantity));
                 } while (cursor.moveToNext());
                 cursor.close();
             }
@@ -70,6 +74,7 @@ public class CartDatabase extends SQLiteOpenHelper {
         }
         return homeArrayList;
     }
+
     public void clear() {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         sqLiteDatabase.delete("cartDatabase", null, null);

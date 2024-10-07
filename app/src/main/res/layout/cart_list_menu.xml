@@ -6,42 +6,102 @@
     android:padding="15dp"
     android:background="@color/white">
 
+    <!-- ImageView for the cart item -->
     <ImageView
         android:id="@+id/cartItemImage"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@drawable/bricks"
-        />
+        android:src="@drawable/bricks" />
+
+    <!-- RelativeLayout containing product details -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/cartItemName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/brick"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_alignParentStart="true"
-        android:textColor="@color/black"/>
-    <TextView
-        android:id="@+id/cardItemDec"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/experience_the_product"
-        android:textColor="@color/black"
-        android:layout_below="@+id/cartItemName"
-        android:textSize="15sp"
-        />
+
+        <!-- Product name -->
+        <TextView
+            android:id="@+id/cartItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/brick"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_alignParentStart="true"
+            android:textColor="@color/black" />
+
+        <!-- Product description -->
+        <TextView
+            android:id="@+id/cardItemDec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/experience_the_product"
+            android:textColor="@color/black"
+            android:layout_below="@+id/cartItemName"
+            android:textSize="15sp" />
+
+        <!-- Product price -->
         <TextView
             android:id="@+id/cardItemPrise"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rs.2000"
+            android:text="Rs.20"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="25sp"
-            android:layout_alignParentEnd="true"
-            />
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
+
+    <!-- LinearLayout for quantity control (increase and decrease buttons) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp">
+
+        <!-- Decrease quantity button -->
+        <Button
+            android:id="@+id/btnDecrease"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="-"
+            android:textSize="20sp"
+            android:background="@drawable/button_background"
+            android:textColor="@color/black" />
+
+        <!-- Quantity TextView -->
+        <TextView
+            android:id="@+id/cartItemQuantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="1"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:gravity="center" />
+
+        <!-- Increase quantity button -->
+        <Button
+            android:id="@+id/btnIncrease"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="+"
+            android:textSize="20sp"
+            android:background="@drawable/button_background"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <!-- Total price display -->
+    <TextView
+        android:id="@+id/totalPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total: Rs.20"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_gravity="end"
+        android:layout_marginTop="20dp" />
+
 </LinearLayout>

@@ -8,7 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.core.content.ContextCompat;
+
 import java.util.ArrayList;
 
 public class HomeAdapter extends BaseAdapter {
@@ -16,7 +18,6 @@ public class HomeAdapter extends BaseAdapter {
     private ArrayList<ItemClass> homeArrayList;
     private HomeDatabase homeDatabase;
     private CartDatabase cartDatabase;
-
 
     public HomeAdapter(Context context, ArrayList<ItemClass> homeArrayList) {
         this.context = context;
@@ -56,27 +57,38 @@ public class HomeAdapter extends BaseAdapter {
         ImageView cartImage = view.findViewById(R.id.cartImage);
         TextView itemPrise = view.findViewById(R.id.itemPrise);
 
+        // Set item details
         itemImage.setImageResource(item.image);
         itemName.setText(item.itemName);
         itemDec.setText(item.itemDisc);
         itemPrise.setText("Rs." + item.prise);
         cartImage.setColorFilter(ContextCompat.getColor(context, item.itemCartColor));
 
+        // Set click listener for adding items to the cart
         cartImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (item.isCart == 0) {
+                    // Set item as added to cart with default quantity = 1
                     item.isCart = 1;
-                    boolean isAdded = cartDatabase.addData(item.itemName,item.itemDisc,item.prise,item.image,item.itemCartColor,item.isCart);
+                    item.quantity = 1; // Default quantity set to 1 when first added to cart
+
+                    // Add item to cart database with the quantity field
+                    boolean isAdded = cartDatabase.addData(item.itemName, item.itemDisc, item.prise, item.image, item.itemCartColor, item.isCart, item.quantity);
+
+                    // Change the cart icon color and update the home database
                     item.setCartColor(R.color.cart_image_green);
                     homeDatabase.updateIsCart(item.itemName, 1, R.color.cart_image_green);
                     cartImage.setColorFilter(ContextCompat.getColor(context, item.itemCartColor));
-                    Toast.makeText(context, isAdded ? "Item added to cart" : "Failed to add item to cart", Toast.LENGTH_SHORT).show();
+
+                    // Show a toast message to indicate success or failure
+                    Toast.makeText(context, isAdded ? "Item added to cart with quantity: 1" : "Failed to add item to cart", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(context, "Already in cart", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
         return view;
     }
 }

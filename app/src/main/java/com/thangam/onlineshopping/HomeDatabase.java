@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-
 import java.util.ArrayList;
 
 public class HomeDatabase extends SQLiteOpenHelper {
@@ -20,12 +19,10 @@ public class HomeDatabase extends SQLiteOpenHelper {
         this.context = context;
     }
 
-
-
-
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_TABLE_QUERY = "CREATE TABLE homeDatabase(id INTEGER PRIMARY KEY AUTOINCREMENT, itemName TEXT, itemDisc TEXT, prise INTEGER, image INTEGER, itemCartColor INTEGER, isCart INTEGER)";
+        // Add a 'quantity' column to the table
+        String CREATE_TABLE_QUERY = "CREATE TABLE homeDatabase(id INTEGER PRIMARY KEY AUTOINCREMENT, itemName TEXT, itemDisc TEXT, prise INTEGER, image INTEGER, itemCartColor INTEGER, isCart INTEGER, quantity INTEGER)";
         db.execSQL(CREATE_TABLE_QUERY);
     }
 
@@ -35,7 +32,8 @@ public class HomeDatabase extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addData(String itemName, String itemDisc, int prise, int image, int itemCartColor, int isCart) {
+    // Update addData to include quantity
+    public boolean addData(String itemName, String itemDisc, int prise, int image, int itemCartColor, int isCart, int quantity) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("itemName", itemName);
@@ -44,6 +42,7 @@ public class HomeDatabase extends SQLiteOpenHelper {
         contentValues.put("image", image);
         contentValues.put("itemCartColor", itemCartColor);
         contentValues.put("isCart", isCart);
+        contentValues.put("quantity", quantity); // Insert quantity
         long l = sqLiteDatabase.insert("homeDatabase", null, contentValues);
         sqLiteDatabase.close();
         return l != -1;
@@ -62,7 +61,8 @@ public class HomeDatabase extends SQLiteOpenHelper {
                     int image = cursor.getInt(4);
                     int itemCartColor = cursor.getInt(5);
                     int isCart = cursor.getInt(6);
-                    homeArrayList.add(new ItemClass(itemName, itemDisc, prise, image, itemCartColor,isCart));
+                    int quantity = cursor.getInt(7); // Fetch quantity from the cursor
+                    homeArrayList.add(new ItemClass(itemName, itemDisc, prise, image, itemCartColor, isCart, quantity)); // Pass quantity to ItemClass
                 } while (cursor.moveToNext());
                 cursor.close();
             }
@@ -72,15 +72,14 @@ public class HomeDatabase extends SQLiteOpenHelper {
         return homeArrayList;
     }
 
-    public boolean updateIsCart(String itemName, int isCart,int itemCartColor) {
+    public boolean updateIsCart(String itemName, int isCart, int itemCartColor) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("isCart", isCart);
-        contentValues.put("itemCartColor",itemCartColor);
+        contentValues.put("itemCartColor", itemCartColor);
         String[] whereArgs = {itemName};
         int rowsAffected = sqLiteDatabase.update("homeDatabase", contentValues, "itemName=?", whereArgs);
         sqLiteDatabase.close();
         return rowsAffected > 0;
     }
-
 }

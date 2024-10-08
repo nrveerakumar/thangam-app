@@ -69,6 +69,8 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
+
     public Boolean isFill() {
         if (loginEmail.getText() == null || loginEmail.getText().toString().isEmpty()) {
             loginEmailLayout.setError("Error");
@@ -88,4 +90,8 @@ public class LoginActivity extends AppCompatActivity {
         return false;
     }
 
+    public void adminButton1(View view) {
+            Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+            startActivity(intent);
+    }
 }

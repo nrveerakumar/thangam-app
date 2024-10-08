@@ -115,11 +115,26 @@
                     android:textStyle="bold"
                     android:textSize="15sp"/>
 
+                <Button
+                    android:id="@+id/adminButton"
+                    android:layout_width="134dp"
+                    android:layout_height="37dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/buttonColor"
+                    android:text="Are You Admin"
+                    android:onClick="adminButton1"
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
 
     </RelativeLayout>
+
+
 </ScrollView>
+
 </LinearLayout>

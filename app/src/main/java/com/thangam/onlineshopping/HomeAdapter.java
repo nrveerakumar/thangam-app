@@ -71,8 +71,7 @@ public class HomeAdapter extends BaseAdapter {
                 if (item.isCart == 0) {
                     // Set item as added to cart with default quantity = 1
                     item.isCart = 1;
-                    item.quantity = 1; // Default quantity set to 1 when first added to cart
-
+                    item.quantity = 1; // Default quantity set to 1 when first added to car
                     // Add item to cart database with the quantity field
                     boolean isAdded = cartDatabase.addData(item.itemName, item.itemDisc, item.prise, item.image, item.itemCartColor, item.isCart, item.quantity);
 

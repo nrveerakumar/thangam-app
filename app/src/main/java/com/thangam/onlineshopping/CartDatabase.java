@@ -21,7 +21,7 @@ public class CartDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Add the 'quantity' field to the table schema
+        // Create table including the 'quantity' field
         String CREATE_TABLE_QUERY = "CREATE TABLE cartDatabase(id INTEGER PRIMARY KEY AUTOINCREMENT, itemName TEXT, itemDisc TEXT, prise INTEGER, image INTEGER, itemCartColor INTEGER, isCart INTEGER, quantity INTEGER)";
         db.execSQL(CREATE_TABLE_QUERY);
     }
@@ -50,9 +50,9 @@ public class CartDatabase extends SQLiteOpenHelper {
         return l != -1;
     }
 
-    // Method to retrieve all data, now including the 'quantity' field
-    public ArrayList<ItemClass> getAllDataUser() {
-        ArrayList<ItemClass> homeArrayList = new ArrayList<>();
+    // Method to retrieve all items in the cart, including 'quantity'
+    public ArrayList<ItemClass> getCartItems() {
+        ArrayList<ItemClass> cartArrayList = new ArrayList<>();
         try {
             SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
             Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM cartDatabase", null);
@@ -65,16 +65,17 @@ public class CartDatabase extends SQLiteOpenHelper {
                     int itemCartColor = cursor.getInt(5);
                     int isCart = cursor.getInt(6);
                     int quantity = cursor.getInt(7); // Get quantity from cursor
-                    homeArrayList.add(new ItemClass(itemName, itemDisc, prise, image, itemCartColor, isCart, quantity));
+                    cartArrayList.add(new ItemClass(itemName, itemDisc, prise, image, itemCartColor, isCart, quantity));
                 } while (cursor.moveToNext());
                 cursor.close();
             }
         } catch (Exception e) {
             Toast.makeText(context, "Error " + e, Toast.LENGTH_SHORT).show();
         }
-        return homeArrayList;
+        return cartArrayList;
     }
 
+    // Method to clear the cart
     public void clear() {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         sqLiteDatabase.delete("cartDatabase", null, null);

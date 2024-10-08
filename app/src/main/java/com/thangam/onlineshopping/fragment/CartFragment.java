@@ -25,7 +25,6 @@ public class CartFragment extends Fragment {
     View view;
     ArrayList<ItemClass> cartArrayList;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +38,7 @@ public class CartFragment extends Fragment {
         cartArrayList = new ArrayList<>();
         ListView listView = view.findViewById(R.id.listView);
         TextView textItemDesc = view.findViewById(R.id.textItemDesc);
+        TextView overallTotalTextView = view.findViewById(R.id.overallTotalTextView); // New TextView for overall total
         Button pleaseOrderButton = view.findViewById(R.id.pleaseOrderButton);
 
         CartDatabase cartDatabase = new CartDatabase(getContext().getApplicationContext());
@@ -46,7 +46,7 @@ public class CartFragment extends Fragment {
         if (cartArrayList.size()==0){
             textItemDesc.setText("Cart is Empty");
         }
-        CartAdapter cartAdapter = new CartAdapter(getActivity().getApplicationContext(), cartArrayList);
+        CartAdapter cartAdapter = new CartAdapter(getActivity().getApplicationContext(), cartArrayList, overallTotalTextView);
         HomeDatabase homeDatabase = new HomeDatabase(getActivity().getApplicationContext());
 
         listView.setAdapter(cartAdapter);
@@ -54,18 +54,23 @@ public class CartFragment extends Fragment {
         pleaseOrderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<ItemClass> cartArrayList = new ArrayList<>();
-                cartArrayList = cartDatabase.getAllDataUser();
+                ArrayList<ItemClass> cartArrayList = cartDatabase.getAllDataUser();
                 for (int i = 0; i < cartArrayList.size(); i++) {
                     ItemClass itemClass = cartArrayList.get(i);
-                    homeDatabase.updateIsCart(itemClass.itemName,itemClass.isCart,R.color.cart_image_red);
+
+                    // Reset isCart to 0 and change color to default after placing the order
+                    homeDatabase.updateIsCart(itemClass.itemName, 0, R.color.item_default_color);
                 }
-                Toast.makeText(getActivity().getApplicationContext(), "Your order has successfully placed",Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(getActivity().getApplicationContext(), "Your order has been successfully placed", Toast.LENGTH_SHORT).show();
                 cartDatabase.clear();
+
+                // Reload the fragment to reflect the changes
                 getParentFragmentManager().beginTransaction().detach(CartFragment.this).commit();
                 getParentFragmentManager().beginTransaction().attach(CartFragment.this).commit();
             }
         });
+
         return view;
     }
 }

@@ -75,11 +75,13 @@ public class HomeDatabase extends SQLiteOpenHelper {
     public boolean updateIsCart(String itemName, int isCart, int itemCartColor) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("isCart", isCart);
-        contentValues.put("itemCartColor", itemCartColor);
+        contentValues.put("isCart", isCart); // Reset isCart to 0
+        contentValues.put("itemCartColor", itemCartColor); // Reset color to default
         String[] whereArgs = {itemName};
         int rowsAffected = sqLiteDatabase.update("homeDatabase", contentValues, "itemName=?", whereArgs);
         sqLiteDatabase.close();
         return rowsAffected > 0;
     }
+
+
 }

@@ -31,5 +31,16 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         />
+    <TextView
+        android:id="@+id/overallTotalTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Overall Total: Rs.0"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:layout_above="@id/pleaseOrderButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"/>
+
 
 </RelativeLayout>

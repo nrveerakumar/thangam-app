@@ -14,10 +14,13 @@ import java.util.ArrayList;
 public class CartAdapter extends BaseAdapter {
     Context context;
     ArrayList<ItemClass> cartArrayList;
+    TextView overallTotalTextView;
 
-    public CartAdapter(Context context, ArrayList<ItemClass> cartArrayList){
+    public CartAdapter(Context context, ArrayList<ItemClass> cartArrayList, TextView overallTotalTextView){
         this.context = context;
         this.cartArrayList = cartArrayList;
+        this.overallTotalTextView = overallTotalTextView; // TextView for overall total
+        updateOverallTotal(); // Calculate initial total when adapter is created
     }
 
     @Override
@@ -73,6 +76,7 @@ public class CartAdapter extends BaseAdapter {
                 item.quantity++;
                 itemQuantity.setText(String.valueOf(item.quantity));
                 updateTotalPrice(totalPrice, item.prise, item.quantity);
+                updateOverallTotal(); // Update overall total when quantity changes
             }
         });
 
@@ -84,6 +88,7 @@ public class CartAdapter extends BaseAdapter {
                     item.quantity--;
                     itemQuantity.setText(String.valueOf(item.quantity));
                     updateTotalPrice(totalPrice, item.prise, item.quantity);
+                    updateOverallTotal(); // Update overall total when quantity changes
                 }
             }
         });
@@ -91,9 +96,19 @@ public class CartAdapter extends BaseAdapter {
         return view;
     }
 
-    // Method to update the total price TextView
+    // Method to update the total price TextView for individual item
     private void updateTotalPrice(TextView totalPriceTextView, double pricePerItem, int quantity) {
         double total = pricePerItem * quantity;
         totalPriceTextView.setText("Total: Rs." + total);
     }
+
+    // Method to calculate and update the overall total
+    private void updateOverallTotal() {
+        double overallTotal = 0;
+        for (ItemClass item : cartArrayList) {
+            overallTotal += item.prise * item.quantity;
+        }
+        overallTotalTextView.setText("Overall Total: Rs." + overallTotal);
+    }
 }
+

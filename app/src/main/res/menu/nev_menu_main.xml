@@ -17,8 +17,15 @@
         android:icon="@drawable/baseline_shopping_cart_24"
         app:showAsAction="never" />
     <item
+        android:id="@+id/feedBackMenu"
+        android:title="Feedback"
+        android:icon="@drawable/baseline_output_24"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/signOutMenu"
         android:title="@string/sign_out"
         android:icon="@drawable/baseline_output_24"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        />
+
 </menu>

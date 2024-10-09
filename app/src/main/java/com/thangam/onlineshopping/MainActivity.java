@@ -76,9 +76,14 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new CartFragment()).commit();
                     toolbarText.setText("Cart");
                     drawerLayout.closeDrawer(GravityCompat.START);
-                } else if (id == R.id.signOutMenu) {
+                } else if (id == R.id.feedBackMenu) {
+                    Intent i = new Intent(MainActivity.this, FeedBack.class);
+                    startActivity(i);
+                }
+                else if (id == R.id.signOutMenu) {
                     signOut();
                 }
+
 
                 return true;
             }

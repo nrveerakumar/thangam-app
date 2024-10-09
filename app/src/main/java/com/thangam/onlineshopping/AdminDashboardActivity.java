@@ -38,7 +38,13 @@ public class AdminDashboardActivity extends AppCompatActivity {
             Intent addProductIntent = new Intent(this, AddProductActivity.class);
             startActivity(addProductIntent);
             return true;
-        } else {
+        }
+        else if (id == R.id.menu_user_feedback) {
+            Intent addFeedbackIntent = new Intent(this, AdminViewFeedback.class);
+            startActivity(addFeedbackIntent);
+            return true;
+        }
+        else {
             return super.onOptionsItemSelected(item);
         }
     }
